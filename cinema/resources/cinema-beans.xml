@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2017 SAP SE or an SAP affiliate company.  All rights reserved.
+
+ This software is the confidential and proprietary information of SAP
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with SAP.
+-->
+<!--
+	ATTENTION: This is just an example file. You have to edit it according to your needs.
+-->
+
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="beans.xsd">
+	
+	<bean class="org.cinema.data.SeatRowPositionData">
+		<property name="rowPositionNumber" type="Integer" />
+		<property name="hasSeat" type="Boolean" />
+		<property name="isOccupied" type="Boolean" />
+	</bean>
+	
+	<bean class="org.cinema.data.SeatRowData">
+		<property name="seatRowNumber" type="Integer" />
+		<property name="seatRowPositions" type="java.util.List&lt;org.cinema.data.SeatRowPositionData&gt;" />
+	</bean>
+	
+	<bean class="org.cinema.data.CinemaRoomData">
+		<property name="code" type="String" />
+		<property name="name" type="String" />
+		<property name="seatRows" type="java.util.List&lt;org.cinema.data.SeatRowData&gt;" />
+	</bean>
+	
+	<bean class="org.cinema.data.FilmData">
+		<property name="code" type="String" />
+		<property name="name" type="String" />
+	</bean>
+	
+	<bean class="org.cinema.data.PresentationData">
+		<property name="code" type="String" />
+		<property name="film" type="org.cinema.data.FilmData" />
+		<property name="startTime" type="String" />
+		<property name="room" type="org.cinema.data.CinemaRoomData" />
+	</bean>
+	
+	<bean class="org.cinema.data.PresentationDayScheduleData">
+		<property name="weekDay" type="String" />
+		<property name="presentations" type="java.util.List&lt;org.cinema.data.PresentationData&gt;" />
+	</bean>
+	
+	<bean class="org.cinema.data.PresentationWeekScheduleData">
+		<property name="filmName" type="String" />
+		<property name="presentationDayScheduleDatas" type="java.util.List&lt;org.cinema.data.PresentationDayScheduleData&gt;" />
+	</bean>
+	
+	<bean class="org.cinema.data.CartInformationData">
+		<property name="presentation" type="String" />
+		<property name="seats" type="java.util.List&lt;String&gt;" />
+		<property name="price" type="String" />
+	</bean>
+	
+	<bean class="org.cinema.data.CreditCardInfoData">
+		<property name="cardOwner" type="String" />
+		<property name="cardNumber" type="String" />
+		<property name="validityMonth" type="String" />
+		<property name="validityYear" type="String" />
+		<property name="cvcCode" type="String" />
+		<property name="validityMonthsList" type="java.util.List&lt;String&gt;" />
+		<property name="validityYearsList" type="java.util.List&lt;String&gt;" />
+	</bean>
+	
+	<bean class="org.cinema.data.CustomerInfoData">
+		<property name="addressInfoData" type="org.cinema.data.AddressInfoData" />
+		<property name="creditCardInfo" type="org.cinema.data.CreditCardInfoData" />
+	</bean>
+	
+	<bean class="org.cinema.data.AddressInfoData">
+		<property name="firstName" type="String" />
+		<property name="lastName" type="String" />
+		<property name="street" type="String" />
+		<property name="streetNumber" type="String" />
+		<property name="postalCode" type="String" />
+		<property name="town" type="String" />
+		<property name="emailAddress" type="String" />
+	</bean>
+	
+	<bean class="org.cinema.data.OrderSeatInfoData">
+		<property name="seatRow" type="Integer" />
+		<property name="positionInSeatRow" type="Integer" />
+	</bean>
+	
+	<bean class="org.cinema.data.OrderInformationData">
+		<property name="orderNumber" type="String" />
+		<property name="addressInfoData" type="org.cinema.data.AddressInfoData" />
+		<property name="creditCardNumber" type="String" />
+		<property name="presentationData" type="org.cinema.data.PresentationData" />
+		<property name="seats" type="java.util.List&lt;org.cinema.data.OrderSeatInfoData&gt;" />
+		<property name="totalPrice" type="String" />
+	</bean>
+
+</beans>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2017 SAP SE or an SAP affiliate company.  All rights reserved.
+
+ This software is the confidential and proprietary information of SAP
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with SAP.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	
+	
+    <!-- Setup -->
+    
+    <bean id="cinemaSystemSetup" class="org.cinema.setup.CinemaSystemSetup">
+        <!-- constructor arg injection example -->
+        <constructor-arg ref="cinemaService"/>
+    </bean>
+    
+    <bean id="cinemaProjectSetup" class="org.cinema.setup.CinemaProjectSetup">
+		<property name="importService" ref="importService" />
+	</bean>
+	
+	
+	<!-- DAOs -->
+	
+	<bean id="cinemaRoomDAO" class="org.cinema.dao.impl.DefaultCinemaRoomDAO">
+        <property name="flexibleSearchService" ref="flexibleSearchService"/>
+    </bean>
+    
+    <bean id="presentationDAO" class="org.cinema.dao.impl.DefaultPresentationDAO">
+        <property name="flexibleSearchService" ref="flexibleSearchService"/>
+    </bean>
+    
+    <bean id="seatDAO" class="org.cinema.dao.impl.DefaultSeatDAO">
+        <property name="flexibleSearchService" ref="flexibleSearchService"/>
+    </bean>
+
+    <bean id="cinemaOrderDAO" class="org.cinema.dao.impl.DefaultCinemaOrderDAO" parent="defaultOrderDao">
+    </bean>
+	
+	
+	<!-- Services -->
+
+    <bean id="cinemaService" class="org.cinema.service.impl.DefaultCinemaService">
+        <!-- setter injection example -->
+        <property name="modelService" ref="modelService"/>
+        <property name="mediaService" ref="mediaService"/>
+        <property name="flexibleSearchService" ref="flexibleSearchService"/>
+    </bean>
+    
+    <bean id="seatService" class="org.cinema.service.impl.DefaultSeatService">
+        <property name="seatDAO" ref="seatDAO"/>
+    </bean>
+    
+    <bean id="cinemaRoomService" class="org.cinema.service.impl.DefaultCinemaRoomService">
+        <property name="cinemaRoomDAO" ref="cinemaRoomDAO"/>
+    </bean>
+    
+    <bean id="presentationService" class="org.cinema.service.impl.DefaultPresentationService">
+        <property name="presentationDAO" ref="presentationDAO"/>
+    </bean>
+    
+    <bean id="cinemaCartService" class="org.cinema.service.impl.DefaultCinemaCartService">
+        <property name="userService" ref="userService"/>
+        <property name="cartService" ref="cartService"/>
+    	<property name="calculationService" ref="calculationService"/>
+    	<property name="modelService" ref="modelService"/>
+    </bean>
+    
+    <bean id="cinemaCustomerService" class="org.cinema.service.impl.DefaultCinemaCustomerService">
+    	<property name="modelService" ref="modelService"/>
+    </bean>
+
+    <bean id="bookingService" class="org.cinema.service.impl.DefaultBookingService">
+        <property name="cinemaCartService" ref="cinemaCartService"/>
+        <property name="orderService" ref="orderService"/>
+        <property name="modelService" ref="modelService"/>
+    </bean>
+    
+    
+    <!-- Converters -->
+    
+    <bean id="cinemaRoomConverter" class="org.cinema.converter.impl.DefaultCinemaRoomConverter">
+    </bean>
+    
+    <bean id="filmConverter" class="org.cinema.converter.impl.DefaultFilmConverter">
+    </bean>
+    
+    <bean id="presentationConverter" class="org.cinema.converter.impl.DefaultPresentationConverter">
+        <property name="i18nService" ref="i18nService"/>
+        <property name="cinemaRoomConverter" ref="cinemaRoomConverter"/>
+        <property name="filmConverter" ref="filmConverter"/>
+    </bean>
+    
+    <bean id="orderConverter" class="org.cinema.converter.impl.DefaultOrderConverter">
+    	<property name="presentationConverter" ref="presentationConverter"/>
+    	<property name="i18nService" ref="i18nService"/>
+    </bean>
+    
+    
+    <!-- Validators -->
+    
+    <bean id="addressInfoDataValidator" class="org.cinema.validator.impl.DefaultAddressInfoDataValidator">
+    </bean>
+    
+    <bean id="creditCardInfoDataValidator" class="org.cinema.validator.impl.DefaultCreditCardInfoDataValidator">
+    	<property name="creditCardNumberHelper" ref="creditCardNumberHelper"/>
+    </bean>
+    
+    
+    <!-- Facades -->
+    
+    <bean id="presentationScheduleFacade" class="org.cinema.facade.impl.DefaultPresentationScheduleFacade">
+        <property name="presentationService" ref="presentationService"/>
+        <property name="i18nService" ref="i18nService"/>
+        <property name="presentationConverter" ref="presentationConverter"/>
+    </bean>
+    
+    <bean id="presentationDetailFacade" class="org.cinema.facade.impl.DefaultPresentationDetailFacade">
+        <property name="presentationService" ref="presentationService"/>
+        <property name="presentationConverter" ref="presentationConverter"/>
+        <property name="cinemaCartService" ref="cinemaCartService"/>
+        <property name="seatService" ref="seatService"/>
+        <property name="i18nService" ref="i18nService"/>
+    </bean>
+    
+    <bean id="bookingFacade" class="org.cinema.facade.impl.DefaultBookingFacade">
+    	<property name="modelService" ref="modelService"/>
+        <property name="bookingService" ref="bookingService"/>
+        <property name="cinemaCartService" ref="cinemaCartService"/>
+        <property name="cinemaCustomerService" ref="cinemaCustomerService"/>
+        <property name="orderConverter" ref="orderConverter"/>
+        <property name="addressInfoValidator" ref="addressInfoDataValidator"/>
+        <property name="creditCardInfoValidator" ref="creditCardInfoDataValidator"/>
+    </bean>
+    
+    
+    <!-- Cronjobs -->
+    
+    <bean id="createSeats4RoomJob" class="org.cinema.jobs.CreateSeats4RoomsJob"
+		parent="abstractJobPerformable">
+		<property name="cinemaRoomService" ref="cinemaRoomService" />
+		<property name="modelService" ref="modelService" />
+		<property name="mediaService" ref="mediaService" />
+	</bean>
+	
+			
+</beans>

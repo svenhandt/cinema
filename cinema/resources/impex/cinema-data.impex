@@ -1,0 +1,58 @@
+
+$productCatalog=Default
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Online'])[unique=true,default=$productCatalog:Online]
+$siteResource=jar:org.cinema.constants.CinemaConstants&/cinema/seatroomplans
+$prices=Europe1prices[translator=de.hybris.platform.europe1.jalo.impex.Europe1PricesTranslator]
+$unit=unit(code)[default=pieces]
+$approved=approvalstatus(code)[default='approved']
+
+INSERT_UPDATE Media;code[unique=true];@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='text/plain'];$catalogVersion
+;standardRoomPlan;$siteResource/standardroom.txt
+;bigRoomPlan;$siteResource/bigroom.txt
+
+INSERT_UPDATE CinemaRoom;code[unique=true];name;seatsPlan(code)
+;room1;Saal 1;standardRoomPlan
+;room2;Saal 2;standardRoomPlan
+;room3;Saal 3;bigRoomPlan
+
+INSERT_UPDATE Film;code[unique=true];name
+;rocky;"Rocky"
+;kingsmen;"Kingsmen"
+;medicus;"Der Medicus"
+
+INSERT_UPDATE Presentation;code[unique=true];film(code);room(code);startDate[dateFormat=dd.MM.yyyy hh:mm:ss];$prices;$catalogVersion;$unit;$approved
+;rocky_room1_120320181700;rocky;room1;"12.03.2018 17:00:00";7,00 EUR
+;rocky_room1_120320182000;rocky;room1;"12.03.2018 20:00:00";8,00 EUR
+;rocky_room2_130320181700;rocky;room2;"13.03.2018 17:00:00";7,50 EUR
+;rocky_room1_140320181600;rocky;room1;"14.03.2018 16:00:00";7,00 EUR
+;rocky_room3_140320181900;rocky;room3;"14.03.2018 19:00:00";7,00 EUR
+;rocky_room1_140320182200;rocky;room1;"14.03.2018 22:00:00";7,00 EUR
+;rocky_room2_150320181600;rocky;room2;"15.03.2018 16:00:00";7,00 EUR
+;rocky_room3_150320181900;rocky;room3;"15.03.2018 19:00:00";7,00 EUR
+;rocky_room3_160320181700;rocky;room3;"16.03.2018 17:00:00";7,00 EUR
+;rocky_room3_160320182000;rocky;room3;"16.03.2018 20:00:00";7,00 EUR
+;rocky_room1_160320182300;rocky;room1;"16.03.2018 23:00:00";7,00 EUR
+;rocky_room1_170320181700;rocky;room1;"17.03.2018 17:00:00";7,00 EUR
+;rocky_room2_170320182000;rocky;room2;"17.03.2018 20:00:00";7,00 EUR
+;rocky_room1_180320181500;rocky;room1;"18.03.2018 15:00:00";7,00 EUR
+;kingsmen_room2_120320181700;kingsmen;room2;"12.03.2018 17:00:00";7,00 EUR
+;kingsmen_room3_130320181700;kingsmen;room3;"13.03.2018 17:00:00";8,00 EUR
+;kingsmen_room2_140320181400;kingsmen;room2;"14.03.2018 14:00:00";7,50 EUR
+;kingsmen_room1_150320181400;kingsmen;room1;"15.03.2018 14:00:00";7,00 EUR
+;kingsmen_room1_160320181700;kingsmen;room1;"16.03.2018 17:00:00";7,00 EUR
+;kingsmen_room3_170320181400;kingsmen;room3;"17.03.2018 14:00:00";7,00 EUR
+;kingsmen_room2_180320181500;kingsmen;room2;"18.03.2018 15:00:00";7,00 EUR
+;medicus_room3_120320181915;medicus;room3;"12.03.2018 19:15:00";7,00 EUR
+;medicus_room3_120320182100;medicus;room3;"12.03.2018 21:00:00";8,00 EUR
+;medicus_room1_130320181700;medicus;room1;"13.03.2018 19:15:00";7,50 EUR
+;medicus_room3_130320182100;medicus;room3;"13.03.2018 21:00:00";7,00 EUR
+;medicus_room3_140320181600;medicus;room3;"14.03.2018 16:00:00";7,00 EUR
+;medicus_room1_140320181900;medicus;room1;"14.03.2018 19:00:00";7,00 EUR
+;medicus_room2_140320182200;medicus;room2;"14.03.2018 22:00:00";7,00 EUR
+;medicus_room3_150320181600;medicus;room3;"15.03.2018 16:00:00";7,00 EUR
+;medicus_room2_160320181720;medicus;room2;"16.03.2018 17:20:00";7,00 EUR
+;medicus_room2_160320182020;medicus;room2;"16.03.2018 20:20:00";7,00 EUR
+;medicus_room2_160320182320;medicus;room2;"16.03.2018 23:20:00";7,00 EUR
+;medicus_room2_170320181700;medicus;room2;"17.03.2018 17:00:00";7,00 EUR
+;medicus_room3_170320182000;medicus;room3;"17.03.2018 20:00:00";7,00 EUR
+;medicus_room3_180320181500;medicus;room3;"18.03.2018 15:00:00";7,00 EUR

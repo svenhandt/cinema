@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- [y] hybris Platform Copyright (c) 2017 SAP SE or an SAP affiliate company. 
+	All rights reserved. This software is the confidential and proprietary information 
+	of SAP ("Confidential Information"). You shall not disclose such Confidential 
+	Information and shall use it only in accordance with the terms of the license 
+	agreement you entered into with SAP. -->
+<!-- ATTENTION: This is just an example file. You have to edit it according 
+	to your needs. -->
+
+<items xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="items.xsd">
+
+
+
+	<relations>
+		<relation code="CinemaRoom2Seats" autocreate="true" generate="false"
+			localized="false">
+			<sourceElement qualifier="seats" type="Seat"
+				collectiontype="list" cardinality="many" ordered="false">
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</sourceElement>
+			<targetElement qualifier="cinemaRoom" type="CinemaRoom"
+				cardinality="one">
+				<modifiers read="true" write="true" search="true"
+					optional="false" />
+			</targetElement>
+		</relation>
+	</relations>
+
+	<itemtypes>
+
+		<itemtype generate="true" code="CinemaRoom" autocreate="true">
+			<deployment table="CinemaRoom" typecode="30777" />
+			<attributes>
+				<attribute qualifier="code" type="java.lang.String">
+					<persistence type="property" />
+					<modifiers optional="false" unique="true" />
+				</attribute>
+				<attribute qualifier="name" type="java.lang.String">
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="seatsPlan" type="Media">
+					<persistence type="property" />
+				</attribute>
+			</attributes>
+		</itemtype>
+
+		<itemtype generate="true" code="Seat" autocreate="true">
+			<deployment table="Seat" typecode="30778" />
+			<attributes>
+				<attribute qualifier="seatRow" type="java.lang.Integer">
+					<persistence type="property" />
+					<modifiers optional="false" />
+				</attribute>
+				<attribute qualifier="positionInSeatRow" type="java.lang.Integer">
+					<persistence type="property" />
+					<modifiers optional="false" />
+				</attribute>
+				<attribute qualifier="abstractOrderEntry" type="AbstractOrderEntry">
+					<persistence type="property" />
+				</attribute>
+			</attributes>
+		</itemtype>
+
+		<itemtype generate="true" code="Film" autocreate="true">
+			<deployment table="Film" typecode="30779" />
+			<attributes>
+				<attribute qualifier="code" type="java.lang.String">
+					<persistence type="property" />
+					<modifiers optional="false" />
+				</attribute>
+				<attribute qualifier="name" type="java.lang.String">
+					<persistence type="property" />
+					<modifiers optional="false" />
+				</attribute>
+			</attributes>
+		</itemtype>
+
+		<itemtype generate="true" code="Presentation" extends="Product"
+			autocreate="true">
+			<attributes>
+				<attribute qualifier="startDate" type="java.util.Date">
+					<persistence type="property" />
+					<modifiers optional="false" />
+				</attribute>
+				<attribute qualifier="film" type="Film">
+					<persistence type="property" />
+					<modifiers optional="false" />
+				</attribute>
+				<attribute qualifier="room" type="CinemaRoom">
+					<persistence type="property" />
+					<modifiers optional="false" />
+				</attribute>
+			</attributes>
+		</itemtype>
+
+		<itemtype generate="true" code="AbstractOrderEntry"
+			autocreate="false">
+			<attributes>
+				<attribute qualifier="seat" type="Seat">
+					<persistence type="property" />
+				</attribute>
+			</attributes>
+		</itemtype>
+
+	</itemtypes>
+</items>
